@@ -16,7 +16,7 @@ for i in range(abs(n)):
         l.append(t)
     else:
         t = l.pop()
-        l.insert(t, 0)
+        l.insert(0,t)
 
 print(l)
 
