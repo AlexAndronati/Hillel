@@ -17,8 +17,8 @@ def decorator_maker(max_size):
                 cache[n] = func(n)
             else:
                 taken_from_cache += 1
-                cache.pop(n)
-                cache[n] = func(n)
+                temp = cache.pop(n)
+                cache[n] = temp
 
             if len(cache) > max_size:
                 cache.pop(list(cache.keys())[0])# displacement of the less used element
@@ -34,6 +34,7 @@ def decorator_maker(max_size):
             print(f"size of cache is {len(cache)}")
             print("Number of function calls = ", calls)
             print("Number of function calls, where the value was taken from cache = ", taken_from_cache)
+            #print(f"cache = {cache}")
 
         wrapper.cache_clear = cache_clear
         wrapper.cache_info = cache_info
@@ -51,12 +52,14 @@ if __name__ == "__main__":
     print(my_func(10))
     print(my_func(8))
     print(my_func(5))
+
     my_func.cache_info()
     print(my_func(2))
     print(my_func(1))
+    print(my_func(3))
     print(my_func(10))
     print(my_func(6))
 
-    my_func.cache_clear()
-    print(my_func(6))
+    # my_func.cache_clear()
+    print(my_func(1))
     my_func.cache_info()
