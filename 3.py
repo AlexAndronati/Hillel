@@ -2,10 +2,9 @@ import time
 
 
 class RuntimeCalculator:
-    def __init__(self):
-        self.beginning = time.time()
 
     def __enter__(self):
+        self.beginning = time.time()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
