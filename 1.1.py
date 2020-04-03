@@ -3,40 +3,29 @@
 class Range:
 
     def __init__(self, *args):
+        self.step = 1
+
         if len(args) == 1:
             self.last = args[0]
             self.current = 0
-            self.step = 1
         elif len(args) == 2:
             self.current = args[0]
             self.last = args[1]
-            self.step = 1
         elif len(args) == 3:
             self.current = args[0]
             self.last = args[1]
             self.step = args[2]
         else:
-            raise Exception("Number of arguments should be 1, 2 or 3")
-
-    # def __init__(self, a, b=0, step=1):
-    #     print(b is self.__init__.__defaults__[0])
-    #     print(step is self.__init__.__defaults__[1])
-    #
-    #     if b is self.__init__.__defaults__[0]:  # Имеет ли место быть такое решение?
-    #         # print(self.__init__.__defaults__)   # или это можно сделать элегентнее?
-    #     # if b == 0:
-    #         self.last = a
-    #         self.current = 0
-    #     else:
-    #         self.current = a
-    #         self.last = b
-    #     self.step = step
+            raise TypeError(f"range expected at most 3 arguments, got {len(args)}")
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        if self.current >= self.last:
+        if self.step == 0:
+            raise ValueError("Range() arg 3 must not be zero")
+
+        if (self.current >= self.last and self.step > 0) or (self.current <= self.last and self.step < 0):
             raise StopIteration
 
         self.current += self.step
@@ -61,7 +50,10 @@ if __name__ == '__main__':
         print(i, end=" ")
     print("\n")
 
-    for i in Range(1, 5, 2, 8):  # ERROR
+    for i in Range(11, 3, -1):
+        print(i, end=" ")
+
+    for i in Range(1, 5, 2, 8, 8):  # ERROR
         print(i, end=" ")
 
 
