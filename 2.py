@@ -1,3 +1,4 @@
+import datetime
 import itertools
 import os
 import string
@@ -47,7 +48,7 @@ def generator(q: Queue):
         if found:
             break
         while q.qsize() > max_queue_size:
-            time.sleep(0.000001)
+            time.sleep(0.0000001)
         combination = "".join(combination)
         combination = combination.encode('utf8')
         q.put(combination)
@@ -58,17 +59,22 @@ def generator(q: Queue):
     print(f"Finished generator")
 
 
-q = Queue()
-thread_g = threading.Thread(target=generator, args=(q,))
-workers = []
-for i in range(THREAD_NUMBER):
-    w = threading.Thread(target=worker, args=(q, i))
-    w.start()
-    workers.append(w)
+if __name__ == '__main__':
+    start = datetime.datetime.now()
 
-thread_g.start()
-thread_g.join()
+    q = Queue()
+    thread_g = threading.Thread(target=generator, args=(q,))
+    workers = []
+    for i in range(THREAD_NUMBER):
+        w = threading.Thread(target=worker, args=(q, i))
+        w.start()
+        workers.append(w)
 
-for w in workers:
-    w.join()
+    thread_g.start()
+    thread_g.join()
 
+    for w in workers:
+        w.join()
+
+    finish = datetime.datetime.now() - start
+    print(finish)
